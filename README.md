@@ -1,2 +1,2 @@
 # Proyecto Final
-Proyecto final para la clase de Introducción a la computación de la carrera de Actuaría.
+Cambiar nombre cuando se obtenga la aceptación del proyecto. (Tabla de mortalidad/Tabla de amortización/Alguna otra idea)
