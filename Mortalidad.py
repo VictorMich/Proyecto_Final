@@ -23,7 +23,7 @@ class Persona:
         self.Cx = Cx[edad-15]
         self.Mx = Mx[edad-15]
         self.edad = edad
-        if edad < 14:
+        if edad < 15:
             error = f"Edad fuera de los parámetros."
             raise IndexError(error)
         elif edad > 99:
@@ -72,8 +72,46 @@ class Persona:
                 dotal = ((dotalMx - dotalMxx + dotalDxn)/(dotalDx))*suma_asegurada
                 return f"La prima será de: ${dotal}"
     
-    def gráficas(self, x, y):
-        x = list(tabla_mortalidad.x)
-        y = list(tabla_mortalidad.y)
-        plt.plot(x,y)
-        return plt.show()
+    def gráficas(self, dato, px = False):
+        dato = dato.lower()
+        if dato == "lx":
+            x = tabla_mortalidad.lx.apply(lambda v: v.replace("$", "").replace(",", "")).astype(float)
+            plt.grid(alpha = 6)
+            plt.xlabel("Edad")
+            plt.ylabel("Muestra")
+            plt.title("lx")
+            plt.plot(x, color="red")
+            plt.legend()
+            plt.show() 
+        elif dato == "dx":
+            x = tabla_mortalidad.dx.apply(lambda v: v.replace("$", "").replace(",", "")).astype(float)
+            plt.grid(alpha = 6)
+            plt.xlabel("Edad")
+            plt.ylabel("Muestra")
+            plt.title("dx")
+            plt.plot(x, color="orange")
+            plt.legend()
+            plt.show() 
+        elif dato == "qx" or dato =="px":
+            px == True
+            y = pd.to_numeric(tabla_mortalidad.qx, errors = "coerce")
+            x = tabla_mortalidad.px.astype(float)
+            plt.grid(alpha = 6)
+            plt.xlabel("Edad")
+            plt.ylabel("Muestra")
+            plt.yticks(np.arange(0,2,0.09))
+            plt.title("Relación qx & px")
+            plt.plot(x, color="blue", linewidth = 3)
+            plt.plot(y, color="purple", linewidth = 3)
+            plt.legend()
+            plt.show()
+        else:
+            raise KeyError("Dato inválido.")
+        
+    def renglón(self, renglón = int, renglón2 = False, renglón3 = False):
+        if renglón > 99:
+            raise ValueError(f"Renglón {renglón} fuera del límite")
+        elif renglón < 15:
+            raise ValueError(f"Renglón {renglón} fuera del límite")
+        else:
+            return tabla_mortalidad.take([renglón-15])
